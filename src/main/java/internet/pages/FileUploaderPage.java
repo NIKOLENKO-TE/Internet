@@ -59,10 +59,33 @@ public class FileUploaderPage extends BasePage {
             // Command + Tab для переключения на окно загрузки файла у Mac
             if (System.getProperty("os.name").contains("Mac")) {
                 robot.keyPress(KeyEvent.VK_META);
-                robot.keyPress(KeyEvent.VK_TAB);
-                robot.keyRelease(KeyEvent.VK_TAB);
+                robot.keyPress(KeyEvent.VK_SHIFT);
+                robot.keyPress(KeyEvent.VK_G);
+                robot.keyRelease(KeyEvent.VK_G);
+                robot.keyRelease(KeyEvent.VK_SHIFT);
                 robot.keyRelease(KeyEvent.VK_META);
+
+                robot.delay(500); // Даем время появиться диалогу ввода пути
+
+                // Вставляем путь из буфера обмена
+                robot.keyPress(KeyEvent.VK_META);
+                robot.keyPress(KeyEvent.VK_V);
+                robot.keyRelease(KeyEvent.VK_V);
+                robot.keyRelease(KeyEvent.VK_META);
+
+                robot.delay(200);
+
+                // Нажимаем Enter
+                robot.keyPress(KeyEvent.VK_ENTER);
+                robot.keyRelease(KeyEvent.VK_ENTER);
+
+                robot.delay(500);
+
+                // Нажимаем Enter снова, чтобы подтвердить выбор файла
+                robot.keyPress(KeyEvent.VK_ENTER);
+                robot.keyRelease(KeyEvent.VK_ENTER);
             }
+
             // Ctrl + V
             robot.keyPress(KeyEvent.VK_CONTROL);
             robot.keyPress(KeyEvent.VK_V);
