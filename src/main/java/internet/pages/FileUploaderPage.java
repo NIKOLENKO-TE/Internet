@@ -50,47 +50,49 @@ public class FileUploaderPage extends BasePage {
     public FileUploaderPage chooseFileInBox(String filePath) {
         click(boxContainer);
         try {
-            // Устанавливаем путь к файлу в буфер обмена
+            // Устанавливаем путь в буфер обмена
             StringSelection buffer = new StringSelection(filePath);
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(buffer, null);
 
             Robot robot = new Robot();
 
-            // Command + Tab для переключения на окно загрузки файла на Mac
             if (System.getProperty("os.name").contains("Mac")) {
+                // Переключение на окно загрузки
                 robot.keyPress(KeyEvent.VK_META);
                 robot.keyPress(KeyEvent.VK_TAB);
                 robot.keyRelease(KeyEvent.VK_TAB);
                 robot.keyRelease(KeyEvent.VK_META);
+                robot.delay(1000); // Ждём, пока окно загрузки откроется
 
-                // Задержка, чтобы дать окну загрузки активироваться
+                // Принудительно активируем Finder
+                Runtime.getRuntime().exec(new String[]{
+                        "osascript", "-e",
+                        "tell application \"Finder\" to activate"
+                });
                 robot.delay(1000);
 
-                // Выполняем AppleScript для фокусировки на окне загрузки файлов
+                // Используем Cmd + Shift + G для ввода пути
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
                         "tell application \"System Events\" to keystroke \"G\" using {command down, shift down}"
                 });
-
                 robot.delay(500);
 
-                // Вставка пути из буфера
+                // Вставляем путь
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
                         "tell application \"System Events\" to keystroke \"V\" using {command down}"
                 });
+                robot.delay(500);
 
-                robot.delay(200);
-
-                // Нажатие Enter для подтверждения пути
+                // Подтверждаем путь
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
                         "tell application \"System Events\" to keystroke return"
                 });
-
                 robot.delay(500);
 
-                // Повторное нажатие Enter для загрузки файла
+                // Выбираем файл и нажимаем "Открыть"
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
                         "tell application \"System Events\" to keystroke return"
@@ -103,6 +105,7 @@ public class FileUploaderPage extends BasePage {
 
         return this;
     }
+
 
 
     @FindBy(className = "dz-filename")
