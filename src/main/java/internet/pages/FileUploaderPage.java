@@ -69,6 +69,7 @@ public class FileUploaderPage extends BasePage {
                 // Теперь используем Robot для вставки пути
 
                 // ⌘ (Cmd) + V для вставки пути
+                robot.delay( 1000);
                 robot.keyPress(KeyEvent.VK_META);
                 robot.keyPress(KeyEvent.VK_V);
                 robot.keyRelease(KeyEvent.VK_V);
@@ -76,13 +77,7 @@ public class FileUploaderPage extends BasePage {
 
                 robot.delay(500);
 
-                // Enter для подтверждения пути
-                robot.keyPress(KeyEvent.VK_ENTER);
-                robot.keyRelease(KeyEvent.VK_ENTER);
-
-                robot.delay(500);
-
-                // Еще раз Enter, чтобы загрузить файл
+                // Enter, чтобы загрузить файл
                 robot.keyPress(KeyEvent.VK_ENTER);
                 robot.keyRelease(KeyEvent.VK_ENTER);
             }
