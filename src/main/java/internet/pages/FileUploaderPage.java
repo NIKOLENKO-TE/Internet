@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class FileUploaderPage extends BasePage {
     public FileUploaderPage(WebDriver driver, WebDriverWait wait) {
@@ -58,32 +59,16 @@ public class FileUploaderPage extends BasePage {
             Robot robot = new Robot();
             // Command + Tab для переключения на окно загрузки файла у Mac
             if (System.getProperty("os.name").contains("Mac")) {
-                robot.keyPress(KeyEvent.VK_META);
-                robot.keyPress(KeyEvent.VK_SHIFT);
-                robot.keyPress(KeyEvent.VK_G);
-                robot.keyRelease(KeyEvent.VK_G);
-                robot.keyRelease(KeyEvent.VK_SHIFT);
-                robot.keyRelease(KeyEvent.VK_META);
+                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke \"G\" using {command down, shift down}'");
+                Thread.sleep(500);
 
-                robot.delay(500); // Даем время появиться диалогу ввода пути
+                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke \"V\" using {command down}'");
+                Thread.sleep(200);
 
-                // Вставляем путь из буфера обмена
-                robot.keyPress(KeyEvent.VK_META);
-                robot.keyPress(KeyEvent.VK_V);
-                robot.keyRelease(KeyEvent.VK_V);
-                robot.keyRelease(KeyEvent.VK_META);
+                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke return'");
+                Thread.sleep(500);
 
-                robot.delay(200);
-
-                // Нажимаем Enter
-                robot.keyPress(KeyEvent.VK_ENTER);
-                robot.keyRelease(KeyEvent.VK_ENTER);
-
-                robot.delay(500);
-
-                // Нажимаем Enter снова, чтобы подтвердить выбор файла
-                robot.keyPress(KeyEvent.VK_ENTER);
-                robot.keyRelease(KeyEvent.VK_ENTER);
+                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke return'");
             }
 
             // Ctrl + V
@@ -94,7 +79,7 @@ public class FileUploaderPage extends BasePage {
             // Enter
             robot.keyPress(KeyEvent.VK_ENTER);
             robot.keyRelease(KeyEvent.VK_ENTER);
-        } catch (AWTException e) {
+        } catch (AWTException | InterruptedException | IOException e) {
             throw new RuntimeException(e);
         }
 
