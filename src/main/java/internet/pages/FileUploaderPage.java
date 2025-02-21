@@ -68,13 +68,17 @@ public class FileUploaderPage extends BasePage {
                 //Для MAC OS Command+Tab
                 if (System.getProperty("os").contains("mac")) {
                     robot.keyPress(VK_META);
-                    robot.keyPress(VK_TAB);
-                    robot.keyRelease(VK_TAB);
+                    robot.keyPress(VK_SHIFT);
+                    robot.keyPress(VK_G);
+                    robot.keyRelease(VK_G);
+                    robot.keyRelease(VK_SHIFT);
                     robot.keyRelease(VK_META);
                 }
 
-                robot.keyPress(VK_DOWN);
-                robot.keyRelease(VK_DOWN);
+                robot.keyPress(VK_META);
+                robot.keyPress(VK_V);
+                robot.keyRelease(VK_V);
+                robot.keyRelease(VK_META);
 
                 robot.keyPress(VK_ENTER);
                 robot.keyRelease(VK_ENTER);
