@@ -67,21 +67,28 @@ public class FileUploaderPage extends BasePage {
                 });
                 //Для MAC OS Command+Tab
                 if (System.getProperty("os").contains("mac")) {
+                    robot.delay(1000);
                     robot.keyPress(VK_META);
+                    robot.delay(100);
                     robot.keyPress(VK_SHIFT);
+                    robot.delay(100);
                     robot.keyPress(VK_G);
+                    robot.delay(100);
                     robot.keyRelease(VK_G);
+                    robot.delay(100);
                     robot.keyRelease(VK_SHIFT);
+                    robot.delay(100);
                     robot.keyRelease(VK_META);
+robot.delay(1000);
+                    robot.keyPress(VK_META);
+                    robot.keyPress(VK_V);
+                    robot.keyRelease(VK_V);
+                    robot.keyRelease(VK_META);
+                    robot.delay(1000);
+                    robot.keyPress(VK_ENTER);
+                    robot.keyRelease(VK_ENTER);
                 }
 
-                robot.keyPress(VK_META);
-                robot.keyPress(VK_V);
-                robot.keyRelease(VK_V);
-                robot.keyRelease(VK_META);
-
-                robot.keyPress(VK_ENTER);
-                robot.keyRelease(VK_ENTER);
             }
 
         } catch (AWTException | IOException e) {
