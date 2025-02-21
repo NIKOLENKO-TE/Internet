@@ -67,6 +67,7 @@ public class FileUploaderPage extends BasePage {
                 });
                 //Для MAC OS Command+Tab
                 if (System.getProperty("os").contains("mac")) {
+                    pause(1000);
                     robot.delay(1000);
                     robot.keyPress(VK_META);
                     robot.delay(100);
@@ -80,8 +81,10 @@ public class FileUploaderPage extends BasePage {
                     robot.delay(100);
                     robot.keyRelease(VK_META);
 robot.delay(1000);
+pause(1000);
                     robot.keyPress(VK_META);
                     robot.keyPress(VK_V);
+                    robot.delay(100);
                     robot.keyRelease(VK_V);
                     robot.keyRelease(VK_META);
                     robot.delay(1000);
