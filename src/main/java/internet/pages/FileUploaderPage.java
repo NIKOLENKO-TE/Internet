@@ -11,6 +11,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import static java.awt.event.KeyEvent.*;
+
 public class FileUploaderPage extends BasePage {
     public FileUploaderPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -63,23 +65,19 @@ public class FileUploaderPage extends BasePage {
                         "osascript", "-e",
                         "tell application \"Google Chrome\" to activate"
                 });
+                //Для MAC OS Command+Tab
+                if (System.getProperty("os").contains("mac")) {
+                    robot.keyPress(VK_META);
+                    robot.keyPress(VK_TAB);
+                    robot.keyRelease(VK_TAB);
+                    robot.keyRelease(VK_META);
+                }
 
-                robot.delay(1000);
+                robot.keyPress(VK_DOWN);
+                robot.keyRelease(VK_DOWN);
 
-                // Теперь используем Robot для вставки пути
-
-                // ⌘ (Cmd) + V для вставки пути
-                robot.delay( 1000);
-                robot.keyPress(KeyEvent.VK_META);
-                robot.keyPress(KeyEvent.VK_V);
-                robot.keyRelease(KeyEvent.VK_V);
-                robot.keyRelease(KeyEvent.VK_META);
-
-                robot.delay(500);
-
-                // Enter, чтобы загрузить файл
-                robot.keyPress(KeyEvent.VK_ENTER);
-                robot.keyRelease(KeyEvent.VK_ENTER);
+                robot.keyPress(VK_ENTER);
+                robot.keyRelease(VK_ENTER);
             }
 
         } catch (AWTException | IOException e) {
