@@ -50,41 +50,60 @@ public class FileUploaderPage extends BasePage {
     public FileUploaderPage chooseFileInBox(String filePath) {
         click(boxContainer);
         try {
-            // Переменная хранит строку для вставки в буфер обмена
+            // Устанавливаем путь к файлу в буфер обмена
             StringSelection buffer = new StringSelection(filePath);
-            System.out.println(filePath);
-            System.out.println(buffer);
-            // `buffer` устанавливаем в память компьютера в буфер
-            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(buffer,null);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(buffer, null);
+
             Robot robot = new Robot();
-            // Command + Tab для переключения на окно загрузки файла у Mac
+
+            // Command + Tab для переключения на окно загрузки файла на Mac
             if (System.getProperty("os.name").contains("Mac")) {
-                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke \"G\" using {command down, shift down}'");
-                Thread.sleep(500);
+                robot.keyPress(KeyEvent.VK_META);
+                robot.keyPress(KeyEvent.VK_TAB);
+                robot.keyRelease(KeyEvent.VK_TAB);
+                robot.keyRelease(KeyEvent.VK_META);
 
-                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke \"V\" using {command down}'");
-                Thread.sleep(200);
+                // Задержка, чтобы дать окну загрузки активироваться
+                robot.delay(1000);
 
-                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke return'");
-                Thread.sleep(500);
+                // Выполняем AppleScript для фокусировки на окне загрузки файлов
+                Runtime.getRuntime().exec(new String[]{
+                        "osascript", "-e",
+                        "tell application \"System Events\" to keystroke \"G\" using {command down, shift down}"
+                });
 
-                Runtime.getRuntime().exec("osascript -e 'tell application \"System Events\" to keystroke return'");
+                robot.delay(500);
+
+                // Вставка пути из буфера
+                Runtime.getRuntime().exec(new String[]{
+                        "osascript", "-e",
+                        "tell application \"System Events\" to keystroke \"V\" using {command down}"
+                });
+
+                robot.delay(200);
+
+                // Нажатие Enter для подтверждения пути
+                Runtime.getRuntime().exec(new String[]{
+                        "osascript", "-e",
+                        "tell application \"System Events\" to keystroke return"
+                });
+
+                robot.delay(500);
+
+                // Повторное нажатие Enter для загрузки файла
+                Runtime.getRuntime().exec(new String[]{
+                        "osascript", "-e",
+                        "tell application \"System Events\" to keystroke return"
+                });
             }
 
-            // Ctrl + V
-            robot.keyPress(KeyEvent.VK_CONTROL);
-            robot.keyPress(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_V);
-            robot.keyRelease(KeyEvent.VK_CONTROL);
-            // Enter
-            robot.keyPress(KeyEvent.VK_ENTER);
-            robot.keyRelease(KeyEvent.VK_ENTER);
-        } catch (AWTException | InterruptedException | IOException e) {
+        } catch (AWTException | IOException e) {
             throw new RuntimeException(e);
         }
 
         return this;
     }
+
 
     @FindBy(className = "dz-filename")
     WebElement dz_filename;
