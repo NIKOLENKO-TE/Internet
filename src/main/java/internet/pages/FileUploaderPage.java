@@ -73,8 +73,22 @@ public class FileUploaderPage extends BasePage {
                 robot.keyPress(VK_V);
                 robot.keyRelease(VK_V);
                 robot.keyRelease(VK_META);
+                robot.delay(500);
                 robot.keyPress(VK_ENTER);
                 robot.keyRelease(VK_ENTER);
+                robot.delay(500);
+                robot.keyPress(VK_ENTER);
+                robot.keyRelease(VK_ENTER);
+            } else if(System.getProperty("os.name").contains("Win")){
+                // Ctrl + V
+                robot.delay(500);
+                robot.keyPress(KeyEvent.VK_CONTROL);
+                robot.keyPress(KeyEvent.VK_V);
+                robot.keyRelease(KeyEvent.VK_V);
+                robot.keyRelease(KeyEvent.VK_CONTROL);
+                // Enter
+                robot.keyPress(KeyEvent.VK_ENTER);
+                robot.keyRelease(KeyEvent.VK_ENTER);
             }
         } catch (AWTException | IOException e) {
             throw new RuntimeException(e);

@@ -23,7 +23,14 @@ public class FileUploaderTests extends TestBase {
     }
 
     @Test
-    public void  fileUploaderInBoxPositiveTest(){
+    public void  fileUploaderInBoxOnWindowsPositiveTest(){
+        new FileUploaderPage(app.driver,app.wait)
+                .chooseFileInBox("\"C:\\Users\\PORTISHEAD\\Downloads\\unnamed2.png\"")
+                .verifyFileNameInBox("unnamed2.png")
+        ;
+    }
+    @Test
+    public void  fileUploaderInBoxOnMacPSPositiveTest(){
         new FileUploaderPage(app.driver,app.wait)
                 .chooseFileInBox("/Users/portishead-macbook/Downloads/cats.jpeg")
                 .verifyFileNameInBox("cats.jpeg")
