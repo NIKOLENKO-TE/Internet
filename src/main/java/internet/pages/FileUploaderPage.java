@@ -57,42 +57,47 @@ public class FileUploaderPage extends BasePage {
             Robot robot = new Robot();
 
             if (System.getProperty("os.name").contains("Mac")) {
-                // Переключение на окно загрузки
-                robot.keyPress(KeyEvent.VK_META);
-                robot.keyPress(KeyEvent.VK_TAB);
-                robot.keyRelease(KeyEvent.VK_TAB);
-                robot.keyRelease(KeyEvent.VK_META);
-                robot.delay(1000); // Ждём, пока окно загрузки откроется
-
-                // Принудительно активируем Finder
-                Runtime.getRuntime().exec(new String[]{
+                // Получаем PID окна загрузки
+                Process process = Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
-                        "tell application \"Finder\" to activate"
+                        "tell application \"Google Chrome\" to activate"
                 });
+
                 robot.delay(1000);
 
-                // Используем Cmd + Shift + G для ввода пути
-                Runtime.getRuntime().exec(new String[]{
+                // Получаем список активных окон и ищем окно загрузки
+                Process getWindowProcess = Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
-                        "tell application \"System Events\" to keystroke \"G\" using {command down, shift down}"
+                        "tell application \"System Events\" to get name of every process whose frontmost is true"
                 });
+
                 robot.delay(500);
 
-                // Вставляем путь
+                // Переключаем фокус на окно загрузки файла
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
-                        "tell application \"System Events\" to keystroke \"V\" using {command down}"
+                        "tell application \"System Events\" to keystroke tab using command down"
                 });
+
+                robot.delay(1000);
+
+                // Вставляем путь к файлу
+                Runtime.getRuntime().exec(new String[]{
+                        "osascript", "-e",
+                        "tell application \"System Events\" to keystroke \"V\" using command down"
+                });
+
                 robot.delay(500);
 
-                // Подтверждаем путь
+                // Подтверждаем выбор
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
                         "tell application \"System Events\" to keystroke return"
                 });
+
                 robot.delay(500);
 
-                // Выбираем файл и нажимаем "Открыть"
+                // Закрываем окно загрузки файла
                 Runtime.getRuntime().exec(new String[]{
                         "osascript", "-e",
                         "tell application \"System Events\" to keystroke return"
